@@ -42,6 +42,7 @@ namespace BLL.Services
         public PostDTO Add(PostDTO post)
         {
             Post dbpost = _mapper.Map<Post>(post);
+            dbpost.CreationDate = DateTime.Now;
             _uow.Posts.Add(dbpost);
             _uow.Save();
             return _mapper.Map<PostDTO>(dbpost);

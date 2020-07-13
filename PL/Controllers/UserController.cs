@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BLL.Interfaces;
+using DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,15 @@ namespace PL.Controllers
             _userService = userService;
         }
 
+        //api/user/identify
+        [HttpGet("identify")]
+        [Authorize]
+        public async Task<IActionResult> Get()
+        {
+            var user = await _userService.IdentifyUserAsync(User);
+            return Ok(user);
+        }
+        
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public IActionResult GetAll()
@@ -31,14 +41,14 @@ namespace PL.Controllers
         {
             return Ok(_postService.GetByAuthor(user));
         }*/
-
+ 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             return Ok(_userService.Get(id));
         }
-
-        [HttpGet("{role}")]
+        //api/user/role/
+        [HttpGet("role/{role}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetUsersByRoleAsync(string role)
         {

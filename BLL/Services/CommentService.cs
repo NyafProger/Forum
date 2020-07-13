@@ -42,6 +42,7 @@ namespace BLL.Services
         public CommentDTO Add(CommentDTO comment)
         {
             Comment dbcomment = _mapper.Map<Comment>(comment);
+            dbcomment.CreationDate = DateTime.Now;
             _uow.Comments.Add(dbcomment);
             _uow.Save();
             return _mapper.Map<CommentDTO>(dbcomment);
@@ -49,6 +50,7 @@ namespace BLL.Services
         public void Delete(int id)
         {
             _uow.Comments.Delete(id);
+            Comment dbcomment = _uow.Comments.Get(id);
             _uow.Save();
         }
         public void Update(CommentDTO comment)

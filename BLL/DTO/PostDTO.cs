@@ -9,7 +9,8 @@ namespace BLL.DTO
     {
         public int Id { get; set; }
         public UserDTO Author { get; set; }
-
+        [Required]
+        public int AuthorId { get; set; }
         [Required]
         [MinLength(1)]
         public string Title { get; set; }

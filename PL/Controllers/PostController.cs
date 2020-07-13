@@ -46,7 +46,7 @@ namespace PL.Controllers
                 return BadRequest("Invalid model");
             }
             var user = await _userService.IdentifyUserAsync(User);
-            post.Author.Id = user.Id;
+            post.AuthorId = user.Id;
             var createdPost = _postService.Add(post);
             return Created($"api/Post/{createdPost.Id}", createdPost);
         }
@@ -70,7 +70,7 @@ namespace PL.Controllers
         public async Task<IActionResult> Update([FromBody]PostDTO post)
         {
             var user = await _userService.IdentifyUserAsync(User);
-            if(user.Id == post.Author.Id)
+            if(user.Id == post.AuthorId)
             {
                 _postService.Update(post);
                 return Ok();
