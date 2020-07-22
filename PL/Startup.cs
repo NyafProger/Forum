@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using BLL;
 using BLL.Infrastructure;
@@ -9,13 +5,10 @@ using BLL.Interfaces;
 using BLL.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace PL
 {
@@ -38,7 +31,6 @@ namespace PL
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAccountService, AccountService>();
-            //services.AddScoped<IRoleService, RoleService>();
             services.ConfigureToken();
             services.AddAuthorization();
             services.AddCors(options => options.AddPolicy("forum-policy", builder =>

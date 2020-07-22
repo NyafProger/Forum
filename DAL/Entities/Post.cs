@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DAL.Entities
 {
@@ -14,6 +13,5 @@ namespace DAL.Entities
         public bool Anonymous { get; set; }
         public IEnumerable<Comment> Comments { get; set; }
         public DateTime CreationDate { get; set; }
-        public int CommentCount { get; set; }
     }
 }

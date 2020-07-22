@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using BLL.DTO;
 using BLL.Interfaces;
-using BLL.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PL.Controllers
@@ -15,13 +10,17 @@ namespace PL.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        private IPostService _postService;
-        private IUserService _userService;
+        private readonly IPostService _postService;
+        private readonly IUserService _userService;
+        private readonly ICommentService _commentService;
+
         public PostController(IPostService postService,
-                              IUserService userService)
+                              IUserService userService,
+                              ICommentService commentService)
         {
             _postService = postService;
             _userService = userService;
+            _commentService = commentService;
         }
 
         [HttpGet]
@@ -36,6 +35,12 @@ namespace PL.Controllers
             return Ok(_postService.Get(id));
         }
 
+        [HttpGet("{id}/comments")]
+        public IActionResult GetCommets(int id) 
+        {
+            var comments = _commentService.GetByPost(id);
+            return Ok(comments);
+        }
 
         [HttpPost]
         [Authorize]

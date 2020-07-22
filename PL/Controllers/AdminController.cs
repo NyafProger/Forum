@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BLL.DTO;
+﻿using System.Threading.Tasks;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PL.Controllers
@@ -18,6 +12,7 @@ namespace PL.Controllers
         private IPostService _postService;
         private IUserService _userService;
         private ICommentService _commentService;
+
         public AdminController(IUserService userService,
                                IPostService postService,
                                ICommentService commentService)
@@ -26,17 +21,18 @@ namespace PL.Controllers
             _userService = userService;
             _commentService = commentService;
         }
-        [HttpPut("role/{id}")]
+
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> AddToRoleAsync([FromBody]string role, int id)
+        [HttpDelete("user/{id}/role/{role}")]
+        public async Task<IActionResult> AddToRoleAsync(int id, string role)
         {
-            var user = _userService.Get(id);
-            var roles = await _userService.GetUserRolesAsync(user);
+            var roles = await _userService.GetUserRolesAsync(id);
+            await _userService.AddToRoleAsync(id, role);
             foreach (var r in roles)
             {
-                await _userService.RemoveFromRoleAsync(user, r);
+                await _userService.RemoveFromRoleAsync(id, r);
             }
-            await _userService.AddToRoleAsync(user, role);
+            await _userService.AddToRoleAsync(id, role);
             return Ok();
         }
 
@@ -49,12 +45,19 @@ namespace PL.Controllers
         }
 
         [HttpDelete("comment/{id}")]
-        [Authorize(Roles = "Admin")]
-        [Authorize(Roles = "Moderator")]
+        [Authorize(Roles = "Admin, Moderator")]
         public IActionResult DeleteComment(int id)
         {
             _commentService.Delete(id);
             return Ok();
+        }
+
+        [HttpGet("user/role/{role}")]
+        [Authorize(Roles = "Admin, Moderator")]
+        public async Task<IActionResult> GetByRole(string role) 
+        {
+            var usersInRole = await _userService.GetUsersByRoleAsync(role);
+            return Ok(usersInRole);
         }
     }
 }

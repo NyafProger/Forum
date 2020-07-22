@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace BLL.DTO
 {
@@ -14,7 +13,6 @@ namespace BLL.DTO
         [Required]
         [MinLength(1)]
         public string Title { get; set; }
-
         [Required]
         public string Text { get; set; }
         public bool Anonymous { get; set; }

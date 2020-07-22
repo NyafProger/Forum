@@ -1,17 +1,17 @@
 ﻿using DAL.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DAL.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {
         ForumContext _db;
+
         public Repository(ForumContext db)
         {
             _db = db;
         }
+
         public virtual void Add(T item)
         {
             _db.Set<T>().Add(item);

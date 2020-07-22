@@ -7,7 +7,6 @@ using DAL.Entities;
 using DAL.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -23,12 +22,14 @@ namespace BLL.Services
         private IMapper _mapper;
 
         public AccountService(UserManager<User> userManager,
-                              IUnitOfWork uow, IMapper mapper)
+                              IUnitOfWork uow, 
+                              IMapper mapper)
         {
             _userManager = userManager;
             _uow = uow;
             _mapper = mapper;
         }
+
         public async Task<UserDTO> RegisterAsync(RegisterModel model)
         {
             User user = new User()
@@ -40,15 +41,14 @@ namespace BLL.Services
                 PictureUrl = "",
             };
             var regResult = await _userManager.CreateAsync(user, model.Password);
-
-            var roleResult = await _userManager.AddToRoleAsync(user, "Admin");
+            var roleResult = await _userManager.AddToRoleAsync(user, Roles.User);
             if (regResult.Succeeded && roleResult.Succeeded)
             {
                 return  _mapper.Map<UserDTO>(_uow.Users.GetByName(user.UserName));
             }
             return null;
         }
-        
+
         public async Task<JwtSecurityToken> LogInAsync(LogInModel model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);

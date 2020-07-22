@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using BLL.DTO;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PL.Controllers
@@ -17,6 +13,7 @@ namespace PL.Controllers
     {
         private ICommentService _commentService;
         private IUserService _userService;
+
         public CommentController(ICommentService commentService,
                                  IUserService userService)
         {
@@ -44,14 +41,6 @@ namespace PL.Controllers
             var createdComment = _commentService.Add(comment);
             return Created($"api/Comment/{createdComment.Id}", createdComment);
         }
-
-        /*
-        [HttpGet]
-        public IActionResult Get([FromBody]PostDTO post)
-        {
-            IEnumerable<CommentDTO> comments = _commentService.GetByPost(post);
-            return Ok(comments);
-        }*/
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)

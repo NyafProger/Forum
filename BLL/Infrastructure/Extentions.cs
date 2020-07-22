@@ -8,9 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL.Infrastructure
 {
@@ -35,6 +33,7 @@ namespace BLL.Infrastructure
                 .AddSignInManager<SignInManager<User>>();
                 
         }
+
         public static void ConfigureDependencies(this IServiceCollection services)
         {
             services.AddScoped<IPostRepository, PostRepository>();
@@ -42,6 +41,7 @@ namespace BLL.Infrastructure
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
+
         public static void ConfigureToken(this IServiceCollection services)
         {
             services.AddAuthentication(options =>

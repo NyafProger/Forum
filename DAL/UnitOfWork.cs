@@ -1,18 +1,16 @@
-﻿using DAL.Entities;
-using DAL.Interfaces;
+﻿using DAL.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DAL
 {
     public class UnitOfWork : IUnitOfWork
     {
         ForumContext _db;
+        public IPostRepository Posts { get; }
+        public ICommentRepository Comments { get; }
+        public IUserRepository Users { get; }
+        private bool disposed = false;
 
-        private IUserRepository _userRepository;
-        private IPostRepository _postRepository;
-        private ICommentRepository _commentRepository;
         public UnitOfWork(ForumContext db,
                           IPostRepository posts,
                           ICommentRepository comments,
@@ -23,12 +21,7 @@ namespace DAL
             Users = users;
             Comments = comments;
         }
-        public IPostRepository Posts { get; }
-        public ICommentRepository Comments { get; }
-        public IUserRepository Users { get; }
-
-        private bool disposed = false;
-
+        
         public virtual void Dispose(bool disposing)
         {
             if (!this.disposed)
@@ -40,11 +33,13 @@ namespace DAL
                 this.disposed = true;
             }
         }
+
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
         public void Save()
         {
             _db.SaveChanges();
