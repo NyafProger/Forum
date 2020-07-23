@@ -60,6 +60,7 @@ namespace BLL.Services
         public void Update(PostDTO post)
         {
             Post dbpost = _mapper.Map<Post>(post);
+            dbpost.CreationDate = DateTime.Now;
             _uow.Posts.Update(dbpost);
             _uow.Save();
         }
